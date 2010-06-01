@@ -16,8 +16,12 @@
 @synthesize delegate;
 -(IBAction)save
 {
-    [self.delegate rowChosen:[lastIndexPath row] fromArray:list];
-    [self.navigationController popViewControllerAnimated:YES];
+  if (lastIndexPath == nil) {
+    [self cancel];
+    return;
+  }
+  [self.delegate rowChosen:[lastIndexPath row] fromArray:list];
+  [super save];
 }
 #pragma mark -
 - (id)initWithStyle:(UITableViewStyle)style
@@ -72,22 +76,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	
 	int newRow = [indexPath row];
 	int oldRow = [lastIndexPath row];
-	
-	if (newRow != oldRow)
+	if (newRow != oldRow || lastIndexPath == nil)
 	{
-		UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
-		newCell.accessoryType = UITableViewCellAccessoryCheckmark;
+	  if (!self.hideSaveButton) {
+	    UITableViewCell *newCell = [tableView cellForRowAtIndexPath:indexPath];
+  		newCell.accessoryType = UITableViewCellAccessoryCheckmark;
 		
-		UITableViewCell *oldCell = [tableView cellForRowAtIndexPath: lastIndexPath]; 
-		oldCell.accessoryType = UITableViewCellAccessoryNone;
+  		UITableViewCell *oldCell = [tableView cellForRowAtIndexPath: lastIndexPath]; 
+  		oldCell.accessoryType = UITableViewCellAccessoryNone;
+	  }
 		
-		lastIndexPath = indexPath;	
+		self.lastIndexPath = indexPath;
 	}
-	
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	if (self.hideSaveButton) {
+    [self save];
+	} else {
+	  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
 }
 - (void)rowChosen:(NSInteger)row fromArray:(NSArray *)theList
 {

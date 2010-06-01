@@ -11,13 +11,20 @@
 
 -(IBAction)dateChanged
 {
-    self.date = [datePicker date];
+  self.date = [datePicker date];
 	[dateTableView reloadData];
 }
 -(IBAction)save
 {
-    [self.delegate takeNewDate:date];
-	[self.navigationController popViewControllerAnimated:YES];
+  [self.delegate takeNewDate:date];
+  [super save];
+}
+-(IBAction)cancel 
+{
+  if (self.delegate && [self.delegate respondsToSelector:@selector(dateWasCancelled:)]) {
+    [self.delegate dateWasCancelled]; 
+  }
+  [super cancel];
 }
 - (void)loadView
 {
@@ -63,7 +70,7 @@
 		[self.datePicker setDate:date animated:YES];	
     else 
 		[self.datePicker setDate:[NSDate date] animated:YES];
-	[self dateChanged];
+	  [self dateChanged];
 	
     [super viewWillAppear:animated];
 }

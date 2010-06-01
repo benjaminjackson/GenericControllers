@@ -10,26 +10,47 @@
 
 
 @implementation AbstractGenericViewController
+
+@synthesize saveButtonTitle, blockHideWhenFinished, hideSaveButton;
+
 - (void)viewWillAppear:(BOOL)animated 
 {
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
-									 initWithTitle:NSLocalizedString(@"Cancel", @"Cancel - for button to cancel changes")
-									 style:UIBarButtonItemStylePlain
-									 target:self
-									 action:@selector(cancel)];
-	self.navigationItem.leftBarButtonItem = cancelButton;
-	[cancelButton release];
-	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc]
-								   initWithTitle:NSLocalizedString(@"Save", @"Save - for button to save changes")
-								   style:UIBarButtonItemStylePlain
-								   target:self
-								   action:@selector(save)];
-	self.navigationItem.rightBarButtonItem = saveButton;
-	[saveButton release];
+  if (saveButtonTitle == nil) {
+    saveButtonTitle = NSLocalizedString(@"Save", @"Save - for button to save changes");
+  }
+  if (!self.hideSaveButton) {
+  	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
+  									 initWithTitle:NSLocalizedString(@"Cancel", @"Cancel - for button to cancel changes")
+  									 style:UIBarButtonItemStylePlain
+  									 target:self
+  									 action:@selector(cancel)];
+  	self.navigationItem.leftBarButtonItem = cancelButton;
+  	[cancelButton release];
+  	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc]
+  								   initWithTitle:saveButtonTitle
+  								   style:UIBarButtonItemStylePlain
+  								   target:self
+  								   action:@selector(save)];
+  	self.navigationItem.rightBarButtonItem = saveButton;
+  	[saveButton release];
+	}
 	[super viewWillAppear:animated];
 }
 -(IBAction)cancel
 {
 	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)save
+{
+  if (!self.blockHideWhenFinished) {
+    [self.navigationController popViewControllerAnimated:YES];
+  }
+}
+
+- (void)dealloc
+{
+  [saveButtonTitle release];
+  [super dealloc];
 }
 @end

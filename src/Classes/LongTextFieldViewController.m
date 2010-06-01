@@ -16,7 +16,7 @@
 - (void)save
 {
 	[self.delegate takeNewString:textView.text];
-	[self.navigationController popViewControllerAnimated:YES];
+  [super save];
 }
 #pragma mark -
 - (void)viewDidLoad 

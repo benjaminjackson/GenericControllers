@@ -11,7 +11,12 @@
 
 @interface AbstractGenericViewController : UITableViewController 
 {
-
+  NSString *saveButtonTitle;
+  BOOL blockHideWhenFinished;
+  BOOL hideSaveButton;
 }
+@property (retain) NSString *saveButtonTitle;
+@property (nonatomic) BOOL blockHideWhenFinished;
+@property (nonatomic) BOOL hideSaveButton;
 -(IBAction)cancel;
 @end
