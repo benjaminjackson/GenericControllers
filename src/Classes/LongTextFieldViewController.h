@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "AbstractGenericViewController.h"
+#import "PlaceholderTextView.h"
+
 @protocol LongTextFieldEditingViewControllerDelegate <NSObject>
 @required
 - (void)takeNewString:(NSString *)newValue;
@@ -16,11 +18,13 @@
 @interface LongTextFieldViewController : AbstractGenericViewController 
 {
 	NSString	*string;
-	UITextView	*textView;
+	NSString	*placeholder;
+	PlaceholderTextView	*textView;
 	
 	id<LongTextFieldEditingViewControllerDelegate>	delegate;
 }
 @property (nonatomic, retain) NSString *string;
+@property (nonatomic, retain) NSString *placeholder;
 @property (nonatomic, retain) IBOutlet UITextView *textView;
 @property (nonatomic, assign)  id <LongTextFieldEditingViewControllerDelegate> delegate;
 - (void)save;

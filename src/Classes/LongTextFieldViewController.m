@@ -11,6 +11,7 @@
 
 @implementation LongTextFieldViewController
 @synthesize string;
+@synthesize placeholder;
 @synthesize textView;
 @synthesize delegate;
 - (void)save
@@ -30,21 +31,23 @@
 	NSUInteger firstRowIndices[] = {0,0};
 	NSIndexPath *firstRowPath = [NSIndexPath indexPathWithIndexes:firstRowIndices length:2];
 	UITableViewCell *firstCell = [self.tableView cellForRowAtIndexPath:firstRowPath];
-	UITextView *firstCellTextField = nil;
+	PlaceholderTextView *firstCellTextField = nil;
 	for (UIView *oneView in firstCell.contentView.subviews)
 	{
-		if ([oneView isMemberOfClass:[UITextView class]])
-			firstCellTextField = (UITextView *)oneView;
+		if ([oneView isMemberOfClass:[PlaceholderTextView class]])
+			firstCellTextField = (PlaceholderTextView *)oneView;
 	}
 	[firstCellTextField becomeFirstResponder];
 	
-    [super viewWillAppear:animated];
+  [super viewWillAppear:animated];
 }
+
 - (void)dealloc 
 {
 	[string release];
+	[placeholder release];
 	[textView release];
-    [super dealloc];
+  [super dealloc];
 }
 
 #pragma mark Tableview methods
@@ -62,7 +65,8 @@
     if (cell == nil) 
 	{
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:LongTextFieldCellIdentifier] autorelease];
-		UITextView *theTextView = [[UITextView alloc] initWithFrame:CGRectMake(10.0, 10.0, 280.0, 161.0)];
+		PlaceholderTextView *theTextView = [[PlaceholderTextView alloc] initWithFrame:CGRectMake(10.0, 10.0, 280.0, 161.0)];
+		theTextView.placeholder = placeholder;
 		theTextView.editable = YES;
 		theTextView.text = string;
 		theTextView.font = [UIFont systemFontOfSize:14.0];
