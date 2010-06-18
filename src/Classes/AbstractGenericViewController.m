@@ -28,7 +28,7 @@
   	[cancelButton release];
   	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc]
   								   initWithTitle:saveButtonTitle
-  								   style:UIBarButtonItemStylePlain
+  								   style:UIBarButtonItemStyleDone
   								   target:self
   								   action:@selector(save)];
   	self.navigationItem.rightBarButtonItem = saveButton;
